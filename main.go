@@ -44,14 +44,8 @@ func main() {
 	router := gin.Default()
 	router.GET("/results", getResults)
 	router.POST("/add", addResult)
-	// router.Run("localhost:8080")
+	router.StaticFS("/problem", http.Dir("./problem"))
 	router.Run(":8080")
-	// metrics.Cntl.KpathsConfig = &metrics.KpathsConfig{}
-	// err := metrics.Cntl.KpathsConfig.GetDynatraceMetricsPutIntoTsdb()
-
-	// if err != nil {
-	// 	metrics.Logger.Debugf("Received error message: %v", err.Error())
-	// }
 }
 
 func getResults(c *gin.Context) {
@@ -63,5 +57,6 @@ func addResult(c *gin.Context) {
 		return
 	}
 	Results = append(Results, result)
+	c.Header("Access-Control-Allow-Origin", "*")
 	c.IndentedJSON(http.StatusCreated, result)
 }
