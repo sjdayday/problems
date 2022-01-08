@@ -178,3 +178,35 @@ func TestInvalidProblemValueReturns400(t *testing.T) {
 	// assert.Equal(t, 400, resp.StatusCode)
 	assert.Equal(t, 400, context.Writer.Status())
 }
+func TestBuildChartItemsForProblemA(t *testing.T) {
+	fmt.Println(t.Name())
+	ResultsA = []ProblemResult{
+		{Problem: "A", NumberA: 1, ElapsedSeconds: 15, MovesA: 25, SourceAddress: "1.2.3.4", StartTime: 1640975675},
+		{Problem: "A", NumberA: 2, ElapsedSeconds: 125, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
+		{Problem: "A", NumberA: 2, ElapsedSeconds: 120, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
+		{Problem: "A", NumberA: 2, ElapsedSeconds: 149, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
+		{Problem: "A", NumberA: 2, ElapsedSeconds: 150, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
+		{Problem: "A", NumberA: 1, ElapsedSeconds: 20, MovesA: 14, SourceAddress: "1.2.3.4", StartTime: 1640975676},
+		{Problem: "A", NumberA: 1, ElapsedSeconds: 45, MovesA: 25, SourceAddress: "1.2.3.4", StartTime: 1640975675},
+		{Problem: "A", NumberA: 2, ElapsedSeconds: 300, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
+		{Problem: "A", NumberA: 2, ElapsedSeconds: 300, MovesA: 14, SourceAddress: "1.2.3.4", StartTime: 1640975676},
+	}
+	items := buildSeriesProblemA(1)
+	assert.Equal(t, 2, items[0].Value)
+	assert.Equal(t, 1, items[1].Value)
+	assert.Equal(t, 11, len(items))
+	items = buildSeriesProblemA(2)
+	assert.Equal(t, 0, items[0].Value, "0-29")
+	assert.Equal(t, 0, items[1].Value, "30-59")
+	assert.Equal(t, 0, items[2].Value, "60-89")
+	assert.Equal(t, 0, items[3].Value, "90-119")
+	assert.Equal(t, 3, items[4].Value, "120-149")
+	assert.Equal(t, 1, items[5].Value, "150-179")
+	assert.Equal(t, 0, items[6].Value, "180-209")
+	assert.Equal(t, 0, items[7].Value, "210-239")
+	assert.Equal(t, 0, items[8].Value, "240-269")
+	assert.Equal(t, 0, items[9].Value, "270-299")
+	assert.Equal(t, 2, items[10].Value, "300 (time limit)")
+
+	assert.Equal(t, 11, len(items))
+}

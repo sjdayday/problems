@@ -1,17 +1,17 @@
 package main
 
 import (
+	"math"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-echarts/go-echarts/v2/charts"
+	"github.com/go-echarts/go-echarts/v2/opts"
 	log "github.com/sirupsen/logrus"
 )
 
-var Cntl *Control
 var Logger *log.Logger
 
-type Control struct {
-}
 type ProblemResult struct {
 	Problem        string `json:"problem"`
 	NumberA        int    `json:"numberA"`
@@ -25,21 +25,33 @@ type ProblemResult struct {
 
 var ResultsA = []ProblemResult{}
 var ResultsB = []ProblemResult{}
+var timeLimit = 300
+var bucketSize = 30
 
 func init() {
 	Logger = log.New()
+	ResultsA = []ProblemResult{
+		// {Problem: "A", NumberA: 1, ElapsedSeconds: 15, MovesA: 25, SourceAddress: "1.2.3.4", StartTime: 1640975675},
+		// {Problem: "A", NumberA: 2, ElapsedSeconds: 125, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
+		// {Problem: "A", NumberA: 2, ElapsedSeconds: 120, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
+		// {Problem: "A", NumberA: 2, ElapsedSeconds: 149, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
+		// {Problem: "A", NumberA: 2, ElapsedSeconds: 150, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
+		// {Problem: "A", NumberA: 1, ElapsedSeconds: 20, MovesA: 14, SourceAddress: "1.2.3.4", StartTime: 1640975676},
+		// {Problem: "A", NumberA: 1, ElapsedSeconds: 45, MovesA: 25, SourceAddress: "1.2.3.4", StartTime: 1640975675},
+		// {Problem: "A", NumberA: 2, ElapsedSeconds: 300, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
+		// {Problem: "A", NumberA: 2, ElapsedSeconds: 300, MovesA: 14, SourceAddress: "1.2.3.4", StartTime: 1640975676},
 
-	// metrics.Logger.SetLevel(log.DebugLevel)
-
-	// metrics.SendDynatraceFunc = metrics.SendRequest
-	// metrics.SendTsdbFunc = metrics.SendRequest
+		// {Problem: "A", NumberA: 1, ElapsedSeconds: 123, MovesA: 25, SourceAddress: "1.2.3.4", StartTime: 1640975675},
+		// {Problem: "A", NumberA: 2, ElapsedSeconds: 300, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
+		// {Problem: "A", NumberA: 1, ElapsedSeconds: 111, MovesA: 14, SourceAddress: "1.2.3.4", StartTime: 1640975676},
+	}
 }
 
 func main() {
-	Cntl = &Control{}
 	router := gin.Default()
 	router.GET("/resultsA", getResultsA)
 	router.GET("/resultsB", getResultsB)
+	router.GET("/graphA", graphA)
 	router.POST("/add", addResult)
 	router.StaticFS("/problem", http.Dir("./problem"))
 	router.Run(":8080")
@@ -69,4 +81,30 @@ func addResult(c *gin.Context) {
 	}
 	c.Header("Access-Control-Allow-Origin", "*")
 	c.IndentedJSON(http.StatusCreated, result)
+}
+func graphA(c *gin.Context) {
+	bar := charts.NewBar()
+	bar.SetGlobalOptions(charts.WithTitleOpts(opts.Title{
+		Title:    "Problem A",
+		Subtitle: "Number of solutions in each 30 second interval",
+	}))
+	bar.SetXAxis([]string{"<30", "30", "60", "90", "120", "150", "180", "210", "240", "270", "300+"}).
+		AddSeries("Number A1", buildSeriesProblemA(1)).
+		AddSeries("Number A2", buildSeriesProblemA(2))
+	bar.Render(c.Writer)
+}
+func buildSeriesProblemA(number int) []opts.BarData {
+	items := make([]opts.BarData, 0)
+	var buckets int = (timeLimit / bucketSize) + 1
+	for i := 0; i < buckets; i++ {
+		items = append(items, opts.BarData{Value: 0})
+	}
+	var bucket int
+	for _, result := range ResultsA {
+		if result.NumberA == number {
+			bucket = int(math.Floor(float64(result.ElapsedSeconds) / float64(bucketSize)))
+			items[bucket].Value = items[bucket].Value.(int) + 1
+		}
+	}
+	return items
 }
