@@ -32,21 +32,6 @@ function updateBtns() {
 function shuffleNumber() {
     number = 1 + (Math.floor( Math.random() * 2))
 }
-// function shuffle() {
-//     var v = 0, t; 
-//     do {
-//         getPossibles();
-//         while( true ) {
-//             t = possibles[Math.floor( Math.random() * possibles.length )];
-//             console.log( t.x, oldzx, t.y, oldzy )
-//             if( t.x != oldzx || t.y != oldzy ) break;
-//         }
-//         oldzx = zx; oldzy = zy;
-//         board[zx][zy] = board[t.x][t.y];
-//         zx = t.x; zy = t.y;
-//         board[zx][zy] = 16; 
-//     } while( ++v < 200 );
-// }
 function goalBoard() {
     for( var j = 0; j < 4; j++ ) {
         for( var i = 0; i < 4; i++ ) {
@@ -161,6 +146,7 @@ function restart() {
     // shuffle();
     clicks = 0;
     secondsLimit = 300; 
+    elapsedSeconds = 0;
     updateBtns();
 }
 function checkFinished() {
