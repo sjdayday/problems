@@ -22,9 +22,9 @@ func TestAddProblemResultA(t *testing.T) {
 	fmt.Println(t.Name())
 	gin.SetMode(gin.TestMode)
 	ResultsA = []ProblemResult{
-		{Problem: "A", NumberA: 1, ElapsedSeconds: 123, MovesA: 25, SourceAddress: "1.2.3.4", StartTime: 1640975675},
-		{Problem: "A", NumberA: 2, ElapsedSeconds: 300, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
-		{Problem: "A", NumberA: 1, ElapsedSeconds: 111, MovesA: 14, SourceAddress: "1.2.3.4", StartTime: 1640975676},
+		{Problem: "A", NumberA: 1, Complete: 1, ElapsedSeconds: 123, MovesA: 25, SourceAddress: "1.2.3.4", StartTime: 1640975675},
+		{Problem: "A", NumberA: 2, Complete: 1, ElapsedSeconds: 300, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
+		{Problem: "A", NumberA: 1, Complete: 1, ElapsedSeconds: 111, MovesA: 14, SourceAddress: "1.2.3.4", StartTime: 1640975676},
 	}
 	assert.Equal(t, 3, len(ResultsA))
 	var jsonStr string = `{"problem": "A", "numberA": 1, "elapsedSeconds": 125, "movesA": 18, "sourceAddress": "1.2.3.4", "startTime": 1640975680}`
@@ -62,9 +62,9 @@ func TestAddProblemResultB(t *testing.T) {
 	fmt.Println(t.Name())
 	gin.SetMode(gin.TestMode)
 	ResultsA = []ProblemResult{
-		{Problem: "A", NumberA: 1, ElapsedSeconds: 123, MovesA: 25, SourceAddress: "1.2.3.4", StartTime: 1640975675},
-		{Problem: "A", NumberA: 2, ElapsedSeconds: 300, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
-		{Problem: "A", NumberA: 1, ElapsedSeconds: 111, MovesA: 14, SourceAddress: "1.2.3.4", StartTime: 1640975676},
+		{Problem: "A", NumberA: 1, Complete: 1, ElapsedSeconds: 123, MovesA: 25, SourceAddress: "1.2.3.4", StartTime: 1640975675},
+		{Problem: "A", NumberA: 2, Complete: 1, ElapsedSeconds: 300, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
+		{Problem: "A", NumberA: 1, Complete: 1, ElapsedSeconds: 111, MovesA: 14, SourceAddress: "1.2.3.4", StartTime: 1640975676},
 	}
 	assert.Equal(t, 3, len(ResultsA))
 	assert.Equal(t, 0, len(ResultsB))
@@ -104,9 +104,9 @@ func TestInvalidProblemResultReturns400(t *testing.T) {
 	fmt.Println(t.Name())
 	gin.SetMode(gin.TestMode)
 	ResultsA = []ProblemResult{
-		{Problem: "A", NumberA: 1, ElapsedSeconds: 123, MovesA: 25, SourceAddress: "1.2.3.4", StartTime: 1640975675},
-		{Problem: "A", NumberA: 2, ElapsedSeconds: 300, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
-		{Problem: "A", NumberA: 1, ElapsedSeconds: 111, MovesA: 14, SourceAddress: "1.2.3.4", StartTime: 1640975676},
+		{Problem: "A", NumberA: 1, Complete: 1, ElapsedSeconds: 123, MovesA: 25, SourceAddress: "1.2.3.4", StartTime: 1640975675},
+		{Problem: "A", NumberA: 2, Complete: 1, ElapsedSeconds: 300, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
+		{Problem: "A", NumberA: 1, Complete: 1, ElapsedSeconds: 111, MovesA: 14, SourceAddress: "1.2.3.4", StartTime: 1640975676},
 	}
 	assert.Equal(t, 3, len(ResultsA))
 	var jsonStr string = `some not very JSON-like string`
@@ -143,9 +143,9 @@ func TestInvalidProblemValueReturns400(t *testing.T) {
 	fmt.Println(t.Name())
 	gin.SetMode(gin.TestMode)
 	ResultsA = []ProblemResult{
-		{Problem: "A", NumberA: 1, ElapsedSeconds: 123, MovesA: 25, SourceAddress: "1.2.3.4", StartTime: 1640975675},
-		{Problem: "A", NumberA: 2, ElapsedSeconds: 300, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
-		{Problem: "A", NumberA: 1, ElapsedSeconds: 111, MovesA: 14, SourceAddress: "1.2.3.4", StartTime: 1640975676},
+		{Problem: "A", NumberA: 1, Complete: 1, ElapsedSeconds: 123, MovesA: 25, SourceAddress: "1.2.3.4", StartTime: 1640975675},
+		{Problem: "A", NumberA: 2, Complete: 1, ElapsedSeconds: 300, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
+		{Problem: "A", NumberA: 1, Complete: 1, ElapsedSeconds: 111, MovesA: 14, SourceAddress: "1.2.3.4", StartTime: 1640975676},
 	}
 	assert.Equal(t, 3, len(ResultsA))
 	var jsonStr string = `{"problem": "NotANorB", "numberA": 1, "elapsedSeconds": 125, "movesA": 18, "sourceAddress": "1.2.3.4", "startTime": 1640975680}`
@@ -181,15 +181,15 @@ func TestInvalidProblemValueReturns400(t *testing.T) {
 func TestBuildChartItemsForProblemA(t *testing.T) {
 	fmt.Println(t.Name())
 	ResultsA = []ProblemResult{
-		{Problem: "A", NumberA: 1, ElapsedSeconds: 15, MovesA: 25, SourceAddress: "1.2.3.4", StartTime: 1640975675},
-		{Problem: "A", NumberA: 2, ElapsedSeconds: 125, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
-		{Problem: "A", NumberA: 2, ElapsedSeconds: 120, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
-		{Problem: "A", NumberA: 2, ElapsedSeconds: 149, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
-		{Problem: "A", NumberA: 2, ElapsedSeconds: 150, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
-		{Problem: "A", NumberA: 1, ElapsedSeconds: 20, MovesA: 14, SourceAddress: "1.2.3.4", StartTime: 1640975676},
-		{Problem: "A", NumberA: 1, ElapsedSeconds: 45, MovesA: 25, SourceAddress: "1.2.3.4", StartTime: 1640975675},
-		{Problem: "A", NumberA: 2, ElapsedSeconds: 300, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
-		{Problem: "A", NumberA: 2, ElapsedSeconds: 300, MovesA: 14, SourceAddress: "1.2.3.4", StartTime: 1640975676},
+		{Problem: "A", NumberA: 1, Complete: 1, ElapsedSeconds: 15, MovesA: 25, SourceAddress: "1.2.3.4", StartTime: 1640975675},
+		{Problem: "A", NumberA: 2, Complete: 1, ElapsedSeconds: 125, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
+		{Problem: "A", NumberA: 2, Complete: 1, ElapsedSeconds: 120, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
+		{Problem: "A", NumberA: 2, Complete: 1, ElapsedSeconds: 149, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
+		{Problem: "A", NumberA: 2, Complete: 1, ElapsedSeconds: 150, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
+		{Problem: "A", NumberA: 1, Complete: 1, ElapsedSeconds: 20, MovesA: 14, SourceAddress: "1.2.3.4", StartTime: 1640975676},
+		{Problem: "A", NumberA: 1, Complete: 1, ElapsedSeconds: 45, MovesA: 25, SourceAddress: "1.2.3.4", StartTime: 1640975675},
+		{Problem: "A", NumberA: 2, Complete: 1, ElapsedSeconds: 300, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
+		{Problem: "A", NumberA: 2, Complete: 1, ElapsedSeconds: 300, MovesA: 14, SourceAddress: "1.2.3.4", StartTime: 1640975676},
 	}
 	items := buildSeriesProblemA(1)
 	assert.Equal(t, 2, items[0].Value)
@@ -209,4 +209,15 @@ func TestBuildChartItemsForProblemA(t *testing.T) {
 	assert.Equal(t, 2, items[10].Value, "300 (time limit)")
 
 	assert.Equal(t, 11, len(items))
+}
+func TestIncludeOnlyCompleteResultsMidwayOrResultsAtTimeLimit(t *testing.T) {
+	fmt.Println(t.Name())
+	ResultsA = []ProblemResult{
+		{Problem: "A", NumberA: 1, Complete: 1, ElapsedSeconds: 15, MovesA: 25, SourceAddress: "1.2.3.4", StartTime: 1640975675},
+		{Problem: "A", NumberA: 1, Complete: 0, ElapsedSeconds: 15, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
+		{Problem: "A", NumberA: 1, Complete: 0, ElapsedSeconds: 300, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
+	}
+	items := buildSeriesProblemA(1)
+	assert.Equal(t, 1, items[0].Value, "incomplete not included until limit")
+	assert.Equal(t, 1, items[10].Value, "incomplete included at limit")
 }

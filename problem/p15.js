@@ -1,6 +1,6 @@
 var board, zx, zy, clicks, possibles, clickCounter, oldzx = -1, oldzy = -1;
 var number, secondsLimit, elapsedSeconds = 0, goalLabel, problemLabel;
-var startButton, timerId, startToggle = 1, startTime;  
+var startButton, timerId, startToggle = 1, startTime, finished = 0;  
 function getPossibles() {
     var ii, jj, cx = [-1, 0, 1, 0], cy = [0, -1, 0, 1];
     possibles = [];
@@ -87,6 +87,7 @@ function sendData() {
         numberA: number,
         elapsedSeconds: elapsedSeconds,
         movesA: clicks,
+        complete: finished,
         sourceAddress: "",
         startTime: startTime
     });
@@ -147,6 +148,7 @@ function restart() {
     clicks = 0;
     secondsLimit = 300; 
     elapsedSeconds = 0;
+    finished = 0; 
     updateBtns();
 }
 function checkFinished() {
@@ -157,6 +159,7 @@ function checkFinished() {
             a = board[i][j];
         }
     }
+    finished = 1;
     return true;
 }
 function btnHandle( e ) {

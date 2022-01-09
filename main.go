@@ -18,6 +18,7 @@ type ProblemResult struct {
 	ElapsedSeconds int    `json:"elapsedSeconds"`
 	MovesA         int    `json:"movesA"`
 	DifferencesA   int    `json:"differencesA"`
+	Complete       int    `json:"complete"`
 	AttemptsB      int    `json:"attemptsB"`
 	SourceAddress  string `json:"sourceAddress"`
 	StartTime      int64  `json:"startTime"`
@@ -31,19 +32,19 @@ var bucketSize = 30
 func init() {
 	Logger = log.New()
 	ResultsA = []ProblemResult{
-		// {Problem: "A", NumberA: 1, ElapsedSeconds: 15, MovesA: 25, SourceAddress: "1.2.3.4", StartTime: 1640975675},
-		// {Problem: "A", NumberA: 2, ElapsedSeconds: 125, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
-		// {Problem: "A", NumberA: 2, ElapsedSeconds: 120, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
-		// {Problem: "A", NumberA: 2, ElapsedSeconds: 149, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
-		// {Problem: "A", NumberA: 2, ElapsedSeconds: 150, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
-		// {Problem: "A", NumberA: 1, ElapsedSeconds: 20, MovesA: 14, SourceAddress: "1.2.3.4", StartTime: 1640975676},
-		// {Problem: "A", NumberA: 1, ElapsedSeconds: 45, MovesA: 25, SourceAddress: "1.2.3.4", StartTime: 1640975675},
-		// {Problem: "A", NumberA: 2, ElapsedSeconds: 300, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
-		// {Problem: "A", NumberA: 2, ElapsedSeconds: 300, MovesA: 14, SourceAddress: "1.2.3.4", StartTime: 1640975676},
+		// {Problem: "A", NumberA: 1, Complete: 1, ElapsedSeconds: 15, MovesA: 25, SourceAddress: "1.2.3.4", StartTime: 1640975675},
+		// {Problem: "A", NumberA: 2, Complete: 1, ElapsedSeconds: 125, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
+		// {Problem: "A", NumberA: 2, Complete: 1, ElapsedSeconds: 120, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
+		// {Problem: "A", NumberA: 2, Complete: 1, ElapsedSeconds: 149, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
+		// {Problem: "A", NumberA: 2, Complete: 1, ElapsedSeconds: 150, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
+		// {Problem: "A", NumberA: 1, Complete: 1, ElapsedSeconds: 20, MovesA: 14, SourceAddress: "1.2.3.4", StartTime: 1640975676},
+		// {Problem: "A", NumberA: 1, Complete: 1, ElapsedSeconds: 45, MovesA: 25, SourceAddress: "1.2.3.4", StartTime: 1640975675},
+		// {Problem: "A", NumberA: 2, Complete: 1, ElapsedSeconds: 300, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
+		// {Problem: "A", NumberA: 2, Complete: 1, ElapsedSeconds: 300, MovesA: 14, SourceAddress: "1.2.3.4", StartTime: 1640975676},
 
-		// {Problem: "A", NumberA: 1, ElapsedSeconds: 123, MovesA: 25, SourceAddress: "1.2.3.4", StartTime: 1640975675},
-		// {Problem: "A", NumberA: 2, ElapsedSeconds: 300, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
-		// {Problem: "A", NumberA: 1, ElapsedSeconds: 111, MovesA: 14, SourceAddress: "1.2.3.4", StartTime: 1640975676},
+		// {Problem: "A", NumberA: 1, Complete: 1, ElapsedSeconds: 123, MovesA: 25, SourceAddress: "1.2.3.4", StartTime: 1640975675},
+		// {Problem: "A", NumberA: 2, Complete: 1, ElapsedSeconds: 300, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
+		// {Problem: "A", NumberA: 1, Complete: 1, ElapsedSeconds: 111, MovesA: 14, SourceAddress: "1.2.3.4", StartTime: 1640975676},
 	}
 }
 
@@ -101,10 +102,13 @@ func buildSeriesProblemA(number int) []opts.BarData {
 	}
 	var bucket int
 	for _, result := range ResultsA {
-		if result.NumberA == number {
+		if result.NumberA == number && resultIncluded(&result) {
 			bucket = int(math.Floor(float64(result.ElapsedSeconds) / float64(bucketSize)))
 			items[bucket].Value = items[bucket].Value.(int) + 1
 		}
 	}
 	return items
+}
+func resultIncluded(result *ProblemResult) bool {
+	return (result.Complete == 1) || (result.ElapsedSeconds == timeLimit)
 }
