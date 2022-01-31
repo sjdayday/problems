@@ -23,6 +23,9 @@ type ProblemResult struct {
 	SourceAddress  string `json:"sourceAddress"`
 	StartTime      int64  `json:"startTime"`
 }
+type BCheck struct {
+	Answer string `json:"answer"`
+}
 
 var ResultsA = []ProblemResult{}
 var ResultsB = []ProblemResult{}
@@ -54,6 +57,7 @@ func main() {
 	router.GET("/resultsB", getResultsB)
 	router.GET("/graphA", graphA)
 	router.POST("/add", addResult)
+	router.POST("/check", checkAnswer)
 	router.StaticFS("/problem", http.Dir("./problem"))
 	router.Run(":8080")
 }
@@ -64,7 +68,6 @@ func getResultsA(c *gin.Context) {
 func getResultsB(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, ResultsB)
 }
-
 func addResult(c *gin.Context) {
 	var result ProblemResult
 	err := c.BindJSON(&result)
@@ -82,6 +85,22 @@ func addResult(c *gin.Context) {
 	}
 	c.Header("Access-Control-Allow-Origin", "*")
 	c.IndentedJSON(http.StatusCreated, result)
+}
+
+func checkAnswer(c *gin.Context) {
+	var check BCheck
+	err := c.BindJSON(&check)
+	if err != nil {
+		c.AbortWithStatus(401)
+		return
+	}
+	if check.Answer != "I-KLMN---J----OP" {
+		c.AbortWithStatus(400)
+		return
+	}
+	c.Header("Access-Control-Allow-Origin", "*")
+	c.Status(http.StatusOK)
+	// IndentedJSON(http.StatusCreated, result)
 }
 func graphA(c *gin.Context) {
 	bar := charts.NewBar()
