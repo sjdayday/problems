@@ -88,7 +88,7 @@ function createSeries() {
 
     problemStatement = document.createElement( "p" );
     problemStatement.className += "txt";
-    problemStatement.innerHTML = "Enter the next 8 letters in the sequence in the right row: ";
+    problemStatement.innerHTML = "Enter the next 8 letters in the right row: ";
     document.body.appendChild( problemStatement );
 
 
