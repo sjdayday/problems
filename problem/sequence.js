@@ -91,29 +91,33 @@ function createSeries() {
     problemStatement.innerHTML = "Enter the next 8 letters in the right row: ";
     document.body.appendChild( problemStatement );
 
-
-    var b, d  = document.createElement( "div" );
-    d.className += "board";
-    document.body.appendChild( d );
+    var tbl = document.createElement('table');
+    var b  = document.createElement( "div" );
+    var tr, td; 
+    tbl.className += "board";
+    
     for( var i = 1; i < 3; i++ ) {
+        tr = tbl.insertRow();
         for( var j = 1; j < 17; j++ ) {
+            td = tr.insertCell();
             if (j < 9) {
-                b = document.createElement( "button" ); // createElement
+                b = document.createElement( "button" ); 
                 b.id = "btn" + i + "-" + j ;
                 b.className = "button"
                 b.appendChild( document.createTextNode( "" ) );
-                d.appendChild( b );
+                td.appendChild( b );
             } else {
-                b = document.createElement("input"); //input element, text
+                b = document.createElement("input"); 
                 b.id = "in" + i + "-" + j ;
                 b.className = "button"
                 b.setAttribute('type',"text");
                 b.setAttribute('name',b.id);
                 b.setAttribute('maxlength',"1");
-                d.appendChild( b );
+                td.appendChild( b );
             }
         }
     }
+    document.body.appendChild( tbl );
     setLetter(1,1,"A");
     setLetter(2,2,"B");
     setLetter(2,3,"C");
