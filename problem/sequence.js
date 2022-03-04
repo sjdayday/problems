@@ -98,6 +98,7 @@ function createSeries() {
     
     for( var i = 1; i < 3; i++ ) {
         tr = tbl.insertRow();
+        tr.className = "row";
         for( var j = 1; j < 17; j++ ) {
             td = tr.insertCell();
             if (j < 9) {
