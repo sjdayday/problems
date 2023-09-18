@@ -28,9 +28,9 @@ COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=build /problem-stats /problem-stats
 COPY --from=build /app/problem /problem
 
-EXPOSE 8080
+EXPOSE 80
 
 ENTRYPOINT [ "/problem-stats" ] 
 
 # docker build -t problem-stats . 
-# docker run -p 127.0.0.1:8080:8080 problem-stats
+# docker run -p 127.0.0.1:80:80 problem-stats

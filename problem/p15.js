@@ -92,7 +92,7 @@ function sendData() {
         startTime: startTime
     });
     // {"problem": "A", "numberA": 1, "elapsedSeconds": 123, "movesA": 25, "sourceAddress": "1.2.3.4", "startTime": 1640975680}
-    response.open("POST", 'http://127.0.0.1:8080/add')
+    response.open("POST", 'http://127.0.0.1:80/add')
     response.setRequestHeader('Content-Type', 'application/json');
     response.setRequestHeader('Accept', 'application/json');    
     console.log(json)
