@@ -1,6 +1,6 @@
 var board, zx, zy, clicks, possibles, clickCounter, oldzx = -1, oldzy = -1;
 var number, secondsLimit, elapsedSeconds = 0, goalLabel, problemLabel;
-var startButton, timerId, startToggle = 1, startTime, finished = 0;  
+var startButton, timerId, startToggle = 1, startTime, finished = 0; clickable=0 
 // var domain = "127.0.0.1"; 
 var domain = "stevedoubleday.com";
 function getPossibles() {
@@ -124,7 +124,8 @@ function toggleStartButton() {
         goalLabel.innerHTML = "Seconds left: " + secondsLimit;
         timerId = setInterval(countdown, 1000);
         startToggle = 0; 
-        startTime = Math.round(new Date().getTime()/1000)  
+        startTime = Math.round(new Date().getTime()/1000) 
+        clickable = 1;  
     } else {
         startButton.innerHTML = "Start";
         startButton.className = "start";
@@ -133,6 +134,7 @@ function toggleStartButton() {
         goalLabel.innerHTML = "Goal:";
         // timerId = setInterval(countdown, 1000);
         startToggle = 1; 
+        clickable = 0; 
     }
 }
 
@@ -170,7 +172,7 @@ function checkFinished() {
     return true;
 }
 function btnHandle( e ) {
-    if (startToggle) {
+    if (clickable) {
         getPossibles();
         var c = e.target.i, r = e.target.j, p = -1;
         for( var i = 0; i < possibles.length; i++ ) {
