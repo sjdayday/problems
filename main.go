@@ -60,7 +60,7 @@ func main() {
 	router.POST("/add", addResult)
 	router.POST("/check", checkAnswer)
 	router.StaticFS("/problem", http.Dir("./problem"))
-	router.Run(":80")
+	router.Run(":8080")
 }
 
 func getResultsA(c *gin.Context) {

@@ -28,7 +28,7 @@ COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=build /problem-stats /problem-stats
 COPY --from=build /app/problem /problem
 
-EXPOSE 80
+EXPOSE 8080
 
 ENTRYPOINT [ "/problem-stats" ] 
 
