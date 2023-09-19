@@ -36,24 +36,8 @@ func init() {
 	Logger = log.New()
 }
 
-// func addForTesting() {
-// 	ResultsA = []ProblemResult{
-// 		{Problem: "A", NumberA: 1, Complete: 1, ElapsedSeconds: 15, MovesA: 25, SourceAddress: "1.2.3.4", StartTime: 1640975675},
-// 		{Problem: "A", NumberA: 2, Complete: 1, ElapsedSeconds: 125, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
-// 		{Problem: "A", NumberA: 2, Complete: 1, ElapsedSeconds: 120, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
-// 		{Problem: "A", NumberA: 2, Complete: 1, ElapsedSeconds: 149, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
-// 		{Problem: "A", NumberA: 2, Complete: 1, ElapsedSeconds: 150, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
-// 		{Problem: "A", NumberA: 1, Complete: 1, ElapsedSeconds: 20, MovesA: 14, SourceAddress: "1.2.3.4", StartTime: 1640975676},
-// 		{Problem: "A", NumberA: 1, Complete: 1, ElapsedSeconds: 45, MovesA: 25, SourceAddress: "1.2.3.4", StartTime: 1640975675},
-// 		{Problem: "A", NumberA: 2, Complete: 1, ElapsedSeconds: 300, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
-// 		{Problem: "A", NumberA: 2, Complete: 1, ElapsedSeconds: 300, MovesA: 14, SourceAddress: "1.2.3.4", StartTime: 1640975676},
-
-// 		{Problem: "A", NumberA: 1, Complete: 1, ElapsedSeconds: 123, MovesA: 25, SourceAddress: "1.2.3.4", StartTime: 1640975675},
-// 		{Problem: "A", NumberA: 2, Complete: 1, ElapsedSeconds: 300, MovesA: 51, SourceAddress: "1.2.3.5", StartTime: 1640975670},
-// 		{Problem: "A", NumberA: 1, Complete: 1, ElapsedSeconds: 111, MovesA: 14, SourceAddress: "1.2.3.4", StartTime: 1640975676},
-// 	}
-// }
-
+//	ResultsA = []ProblemResult{
+//		{Problem: "A", NumberA: 1, Complete: 1, ElapsedSeconds: 15, MovesA: 25, SourceAddress: "1.2.3.4", StartTime: 1640975675},
 func main() {
 	router := gin.Default()
 	router.GET("/resultsA", getResultsA)

@@ -1,11 +1,6 @@
 package main
 
 import (
-	// "encoding/json"
-	// "errors"
-	// "fmt"q
-
-	// "time"
 	"bytes"
 	"fmt"
 	"io"
@@ -15,7 +10,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
-	// "cdts.kp.org/metrics"
 )
 
 // TODO graph problem B, and verify timeout behavior
@@ -29,7 +23,6 @@ func TestAddProblemResultA(t *testing.T) {
 	}
 	assert.Equal(t, 3, len(ResultsA))
 	var jsonStr string = `{"problem": "A", "numberA": 1, "elapsedSeconds": 125, "movesA": 18, "sourceAddress": "1.2.3.4", "startTime": 1640975680}`
-	// req := httptest.NewRequest("GET", "http://example.com/foo", nil)
 	w := httptest.NewRecorder()
 	io.WriteString(w, jsonStr)
 
@@ -41,11 +34,6 @@ func TestAddProblemResultA(t *testing.T) {
 	context.Request.Method = "POST" // or PUT
 	context.Request.Header.Set("Content-Type", "application/json")
 
-	// jsonbytes, err := json.Marshal(ProblemResult{})
-	// if err != nil {
-	//     panic(err)
-	// }
-
 	context.Request.Body = io.NopCloser(bytes.NewBuffer([]byte(jsonStr)))
 	addResult(context)
 	assert.Equal(t, 4, len(ResultsA))
@@ -53,11 +41,7 @@ func TestAddProblemResultA(t *testing.T) {
 	assert.Equal(t, 125, ResultsA[3].ElapsedSeconds)
 
 	resp := w.Result()
-	// body, _ := io.ReadAll(resp.Body)
 	assert.Equal(t, 200, resp.StatusCode)
-
-	// fmt.Println(resp.Header.Get("Content-Type"))
-	// fmt.Println(string(body))
 }
 func TestAddProblemResultB(t *testing.T) {
 	fmt.Println(t.Name())
@@ -70,7 +54,6 @@ func TestAddProblemResultB(t *testing.T) {
 	assert.Equal(t, 3, len(ResultsA))
 	assert.Equal(t, 0, len(ResultsB))
 	var jsonStr string = `{"problem": "B", "numberA": 0, "elapsedSeconds": 30, "movesA": 0, "sourceAddress": "1.2.3.4", "startTime": 1640975680}`
-	// req := httptest.NewRequest("GET", "http://example.com/foo", nil)
 	w := httptest.NewRecorder()
 	io.WriteString(w, jsonStr)
 
@@ -82,11 +65,6 @@ func TestAddProblemResultB(t *testing.T) {
 	context.Request.Method = "POST" // or PUT
 	context.Request.Header.Set("Content-Type", "application/json")
 
-	// jsonbytes, err := json.Marshal(ProblemResult{})
-	// if err != nil {
-	//     panic(err)
-	// }
-
 	context.Request.Body = io.NopCloser(bytes.NewBuffer([]byte(jsonStr)))
 	addResult(context)
 	assert.Equal(t, 3, len(ResultsA))
@@ -94,11 +72,8 @@ func TestAddProblemResultB(t *testing.T) {
 	assert.Equal(t, 30, ResultsB[0].ElapsedSeconds)
 
 	resp := w.Result()
-	// body, _ := io.ReadAll(resp.Body)
 	assert.Equal(t, 200, resp.StatusCode)
 
-	// fmt.Println(resp.Header.Get("Content-Type"))
-	// fmt.Println(string(body))
 }
 
 func TestInvalidProblemResultReturns400(t *testing.T) {
@@ -111,23 +86,15 @@ func TestInvalidProblemResultReturns400(t *testing.T) {
 	}
 	assert.Equal(t, 3, len(ResultsA))
 	var jsonStr string = `some not very JSON-like string`
-	// req := httptest.NewRequest("GET", "http://example.com/foo", nil)
 	w := httptest.NewRecorder()
 	io.WriteString(w, jsonStr)
 
 	context, _ := gin.CreateTestContext(w)
-	// from: https://stackoverflow.com/questions/67508787/how-to-mock-a-gin-context
 	context.Request = &http.Request{
 		Header: make(http.Header),
 	}
 	context.Request.Method = "POST" // or PUT
 	context.Request.Header.Set("Content-Type", "application/json")
-
-	// jsonbytes, err := json.Marshal(ProblemResult{})
-	// if err != nil {
-	//     panic(err)
-	// }
-
 	context.Request.Body = io.NopCloser(bytes.NewBuffer([]byte(jsonStr)))
 	addResult(context)
 	assert.Equal(t, 3, len(ResultsA))
@@ -135,9 +102,6 @@ func TestInvalidProblemResultReturns400(t *testing.T) {
 	// per: https://github.com/gin-gonic/gin/issues/1120
 	// the resp.StatusCode is not updated consistently during testing,
 	// so use context.Writer.Status() instead
-	// resp := w.Result()
-	// body, _ := io.ReadAll(resp.Body)
-	// assert.Equal(t, 400, resp.StatusCode)
 	assert.Equal(t, 400, context.Writer.Status())
 }
 func TestInvalidProblemValueReturns400(t *testing.T) {
@@ -150,33 +114,18 @@ func TestInvalidProblemValueReturns400(t *testing.T) {
 	}
 	assert.Equal(t, 3, len(ResultsA))
 	var jsonStr string = `{"problem": "NotANorB", "numberA": 1, "elapsedSeconds": 125, "movesA": 18, "sourceAddress": "1.2.3.4", "startTime": 1640975680}`
-	// req := httptest.NewRequest("GET", "http://example.com/foo", nil)
 	w := httptest.NewRecorder()
 	io.WriteString(w, jsonStr)
 
 	context, _ := gin.CreateTestContext(w)
-	// from: https://stackoverflow.com/questions/67508787/how-to-mock-a-gin-context
 	context.Request = &http.Request{
 		Header: make(http.Header),
 	}
 	context.Request.Method = "POST" // or PUT
 	context.Request.Header.Set("Content-Type", "application/json")
-
-	// jsonbytes, err := json.Marshal(ProblemResult{})
-	// if err != nil {
-	//     panic(err)
-	// }
-
 	context.Request.Body = io.NopCloser(bytes.NewBuffer([]byte(jsonStr)))
 	addResult(context)
 	assert.Equal(t, 3, len(ResultsA))
-
-	// per: https://github.com/gin-gonic/gin/issues/1120
-	// the resp.StatusCode is not updated consistently during testing,
-	// so use context.Writer.Status() instead
-	// resp := w.Result()
-	// body, _ := io.ReadAll(resp.Body)
-	// assert.Equal(t, 400, resp.StatusCode)
 	assert.Equal(t, 400, context.Writer.Status())
 }
 func TestBuildChartItemsForProblemA(t *testing.T) {
