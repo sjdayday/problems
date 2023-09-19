@@ -104,10 +104,9 @@ function sendData() {
     response.setRequestHeader('Accept', 'application/json');    
     console.log(json)
     response.send(json);
-    // TODO: comment 
-    response.onload = (e) => {
-        alert(response.response);
-    }
+    // response.onload = (e) => {
+    //     alert(response.response);
+    // }
 }
 function stop() {
     clearInterval(timerId);
