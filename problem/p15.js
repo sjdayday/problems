@@ -1,6 +1,8 @@
 var board, zx, zy, clicks, possibles, clickCounter, oldzx = -1, oldzy = -1;
 var number, secondsLimit, elapsedSeconds = 0, goalLabel, problemLabel;
 var startButton, timerId, startToggle = 1, startTime, finished = 0;  
+// var domain = "127.0.0.1"; 
+var domain = "stevedoubleday.com";
 function getPossibles() {
     var ii, jj, cx = [-1, 0, 1, 0], cy = [0, -1, 0, 1];
     possibles = [];
@@ -92,7 +94,9 @@ function sendData() {
         startTime: startTime
     });
     // {"problem": "A", "numberA": 1, "elapsedSeconds": 123, "movesA": 25, "sourceAddress": "1.2.3.4", "startTime": 1640975680}
-    response.open("POST", 'http://127.0.0.1:80/add')
+    let address = "http://" + domain + ":80/add";
+    response.open("POST", address);
+    // response.open("POST", 'http://127.0.0.1:80/add')
     response.setRequestHeader('Content-Type', 'application/json');
     response.setRequestHeader('Accept', 'application/json');    
     console.log(json)
