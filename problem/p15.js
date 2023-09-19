@@ -170,27 +170,29 @@ function checkFinished() {
     return true;
 }
 function btnHandle( e ) {
-    getPossibles();
-    var c = e.target.i, r = e.target.j, p = -1;
-    for( var i = 0; i < possibles.length; i++ ) {
-        if( possibles[i].x == c && possibles[i].y == r ) {
-            p = i;
-            break;
+    if (startToggle) {
+        getPossibles();
+        var c = e.target.i, r = e.target.j, p = -1;
+        for( var i = 0; i < possibles.length; i++ ) {
+            if( possibles[i].x == c && possibles[i].y == r ) {
+                p = i;
+                break;
+            }
         }
-    }
-    if( p > -1 ) {
-        clicks++;
-        var t = possibles[p];
-        board[zx][zy] = board[t.x][t.y];
-        zx = t.x; zy = t.y;
-        board[zx][zy] = 16;
-        updateBtns();
-        if( checkFinished() ) {
-            setTimeout(function(){ 
-                alert( "WELL DONE!" );
-                stop(); 
-                // restart();
-            }, 1);
+        if( p > -1 ) {
+            clicks++;
+            var t = possibles[p];
+            board[zx][zy] = board[t.x][t.y];
+            zx = t.x; zy = t.y;
+            board[zx][zy] = 16;
+            updateBtns();
+            if( checkFinished() ) {
+                setTimeout(function(){ 
+                    alert( "WELL DONE!" );
+                    stop(); 
+                    // restart();
+                }, 1);
+            }
         }
     }
 }

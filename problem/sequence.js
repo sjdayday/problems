@@ -35,9 +35,9 @@ function sendData() {
         console.log(json)
         response.send(json);
         notFinished = 0; 
-        response.onload = (e) => {
-            alert(response.response);
-        }
+        // response.onload = (e) => {
+        //     alert(response.response);
+        // }
     }
 }
 function sendAnswer( answer ) {
@@ -46,7 +46,14 @@ function sendAnswer( answer ) {
     var json = JSON.stringify({
         answer: answer 
     });
-    response.open("POST", 'http://127.0.0.1:80/check')
+    let address = "http://" + domain + ":80/check";
+    response.open("POST", address);
+    response.setRequestHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+    response.setRequestHeader("Pragma", "no-cache"); // HTTP 1.0.
+    response.setRequestHeader("Expires", "0"); // Proxies.
+    response.setRequestHeader('Content-Type', 'application/json');
+    response.setRequestHeader('Accept', 'application/json');    
+//    response.open("POST", 'http://127.0.0.1:80/check')
     response.setRequestHeader('Content-Type', 'application/json');
     response.setRequestHeader('Accept', 'application/json'); 
     response.onreadystatechange = function () {
