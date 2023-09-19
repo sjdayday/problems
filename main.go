@@ -112,6 +112,9 @@ func graphA(c *gin.Context) {
 	bar.SetXAxis([]string{"<30", "30", "60", "90", "120", "150", "180", "210", "240", "270", "300+"}).
 		AddSeries("Number A1", buildSeriesProblemA(1)).
 		AddSeries("Number A2", buildSeriesProblemA(2))
+	c.Header("Cache-Control", "no-cache, no-store, must-revalidate")
+	c.Header("Pragma", "no-cache")
+	c.Header("Expires", "0")
 	bar.Render(c.Writer)
 }
 func graphB(c *gin.Context) {
@@ -122,6 +125,9 @@ func graphB(c *gin.Context) {
 	}))
 	bar.SetXAxis([]string{"<30", "30", "60", "90", "120", "150", "180", "210", "240", "270", "300+"}).
 		AddSeries("Problem B", buildSeriesProblemB())
+	c.Header("Cache-Control", "no-cache, no-store, must-revalidate")
+	c.Header("Pragma", "no-cache")
+	c.Header("Expires", "0")
 	bar.Render(c.Writer)
 }
 

@@ -18,7 +18,7 @@ import (
 	// "cdts.kp.org/metrics"
 )
 
-//TODO graph problem B, and verify timeout behavior
+// TODO graph problem B, and verify timeout behavior
 func TestAddProblemResultA(t *testing.T) {
 	fmt.Println(t.Name())
 	gin.SetMode(gin.TestMode)
