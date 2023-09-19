@@ -96,9 +96,9 @@ function sendData() {
     // {"problem": "A", "numberA": 1, "elapsedSeconds": 123, "movesA": 25, "sourceAddress": "1.2.3.4", "startTime": 1640975680}
     let address = "http://" + domain + ":80/add";
     response.open("POST", address);
-    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
-    response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
-    response.setHeader("Expires", "0"); // Proxies.
+    response.setRequestHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+    response.setRequestHeader("Pragma", "no-cache"); // HTTP 1.0.
+    response.setRequestHeader("Expires", "0"); // Proxies.
     // response.open("POST", 'http://127.0.0.1:80/add')
     response.setRequestHeader('Content-Type', 'application/json');
     response.setRequestHeader('Accept', 'application/json');    

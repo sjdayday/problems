@@ -40,7 +40,7 @@ gcloud compute instances create-with-container instance-1 \
     --boot-disk-size=10GB \
     --boot-disk-type=pd-balanced \
     --boot-disk-device-name=instance-1 \
-    --container-image=us-west2-docker.pkg.dev/key-airlock-252619/solidprogress/problem-stats:v6 \
+    --container-image=us-west2-docker.pkg.dev/key-airlock-252619/solidprogress/problem-stats:v8 \
     --container-restart-policy=always \
     --no-shielded-secure-boot \
     --shielded-vtpm \

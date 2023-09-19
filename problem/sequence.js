@@ -1,6 +1,8 @@
 var number, secondsLimit, elapsedSeconds = 0, timeLabel, problemLabel;
 var startButton, timerId, startToggle = 1, startTime, notFinished = 1;  
 var answerLabel, notYet = 0, attemptsB = 0; 
+// var domain = "127.0.0.1"; 
+var domain = "stevedoubleday.com";
 function countdown() {
     secondsLimit--;
     elapsedSeconds++; 
@@ -23,7 +25,11 @@ function sendData() {
             startTime: startTime
         });
         // {"problem": "A", "numberA": 1, "elapsedSeconds": 123, "movesA": 25, "sourceAddress": "1.2.3.4", "startTime": 1640975680}
-        response.open("POST", 'http://127.0.0.1:80/add')
+        let address = "http://" + domain + ":80/add";
+        response.open("POST", address);
+        response.setRequestHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        response.setRequestHeader("Pragma", "no-cache"); // HTTP 1.0.
+        response.setRequestHeader("Expires", "0"); // Proxies.
         response.setRequestHeader('Content-Type', 'application/json');
         response.setRequestHeader('Accept', 'application/json');    
         console.log(json)
