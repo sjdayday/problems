@@ -1,8 +1,9 @@
 var number, secondsLimit, elapsedSeconds = 0, timeLabel, problemLabel;
 var startButton, timerId, startToggle = 1, startTime, notFinished = 1;  
-var answerLabel, notYet = 0, attemptsB = 0; 
-// var domain = "127.0.0.1"; 
-var domain = "stevedoubleday.com";
+var answerLabel, notYet = 0, attemptsB = 0, domain, port; 
+// domain = "localhost"; port=8080; 
+//domain = "127.0.0.1"; port=8080; 
+domain = "stevedoubleday.com"; port = 80; 
 function countdown() {
     secondsLimit--;
     elapsedSeconds++; 
@@ -25,7 +26,8 @@ function sendData() {
             startTime: startTime
         });
         // {"problem": "A", "numberA": 1, "elapsedSeconds": 123, "movesA": 25, "sourceAddress": "1.2.3.4", "startTime": 1640975680}
-        let address = "http://" + domain + ":80/add";
+        let address = "http://" + domain + ":" + port + "/add";
+        // console.log(address);
         response.open("POST", address);
         response.setRequestHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
         response.setRequestHeader("Pragma", "no-cache"); // HTTP 1.0.
@@ -46,7 +48,8 @@ function sendAnswer( answer ) {
     var json = JSON.stringify({
         answer: answer 
     });
-    let address = "http://" + domain + ":80/check";
+    let address = "http://" + domain + ":" + port + "/check";
+    // console.log(address); 
     response.open("POST", address);
     response.setRequestHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
     response.setRequestHeader("Pragma", "no-cache"); // HTTP 1.0.
@@ -70,6 +73,7 @@ function sendAnswer( answer ) {
                 answerLabel.innerHTML = "Not yet...try again";
                 notYet = 1; 
             }
+            resetWhitespace();
         } else {
             console.log("ready: "+response.readyState+" status: "+response.status);
         }
@@ -157,6 +161,15 @@ function createSeries() {
 
     timerId = setInterval(countdown, 1000);
 }
+function resetWhitespace() {
+    var a; 
+    for ( var i = 0; i < 16; i++ ) {
+        a = document.getElementsByTagName("input")[i];
+        if (a.value.trim() == "") {
+            a.value = ""; // clear out any blanks
+        }
+    }
+}
 function start() {
     secondsLimit = 300; 
     elapsedSeconds = 0;
@@ -168,14 +181,14 @@ function start() {
 function setLetter(i, j, letter) {
     var b, id;
     id = "btn" + i + "-" + j;
-    console.log(id)
+    // console.log(id)
     b = document.getElementById( id );
     b.innerHTML = ( ""+letter );
     b.className = "button"
 }
 function checkSolution() {
     if (notFinished) {
-        var a, b, id, answer;
+        var a, answer;
         console.log("check solution called");
         answer = "";
         for ( var i = 0; i < 16; i++ ) {
@@ -183,7 +196,7 @@ function checkSolution() {
             if (a.trim() == "") {
                 answer = answer + "-";
             } else {
-                answer = answer + a.toUpperCase();
+                answer = answer + a; // no: a.toUpperCase()
             }
         }
         console.log("answer: "+answer )

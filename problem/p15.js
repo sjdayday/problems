@@ -1,8 +1,10 @@
 var board, zx, zy, clicks, possibles, clickCounter, oldzx = -1, oldzy = -1;
 var number, secondsLimit, elapsedSeconds = 0, goalLabel, problemLabel;
-var startButton, timerId, startToggle = 1, startTime, finished = 0; clickable=0 
-// var domain = "127.0.0.1"; 
-var domain = "stevedoubleday.com";
+var startButton, timerId, startToggle = 1, startTime, finished = 0; clickable=0;
+var domain, port;  
+// domain = "localhost"; port=8080; 
+//domain = "127.0.0.1"; port=8080; 
+domain = "stevedoubleday.com"; port=80; 
 function getPossibles() {
     var ii, jj, cx = [-1, 0, 1, 0], cy = [0, -1, 0, 1];
     possibles = [];
@@ -94,7 +96,7 @@ function sendData() {
         startTime: startTime
     });
     // {"problem": "A", "numberA": 1, "elapsedSeconds": 123, "movesA": 25, "sourceAddress": "1.2.3.4", "startTime": 1640975680}
-    let address = "http://" + domain + ":80/add";
+    let address = "http://" + domain + ":" + port + "/add";
     response.open("POST", address);
     response.setRequestHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
     response.setRequestHeader("Pragma", "no-cache"); // HTTP 1.0.
