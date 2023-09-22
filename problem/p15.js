@@ -151,12 +151,14 @@ function startHandle() {
 }
 
 function restart() {
+    shuffleNumber();
     goalBoard();
     // shuffle();
     clicks = 0;
     secondsLimit = 300; 
     elapsedSeconds = 0;
     finished = 0; 
+    problemLabel.innerHTML = "Problem A" + number;
     updateBtns();
 }
 function checkFinished() {
