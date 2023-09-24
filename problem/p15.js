@@ -6,7 +6,7 @@ var domain, port;
 // domain = "127.0.0.1"; port=8080; 
 domain = "stevedoubleday.com"; port=80; 
 function getPossibles() {
-    console.log("zx: " + zx + " zy: " + zy); 
+    // console.log("zx: " + zx + " zy: " + zy); 
     var ii, jj, cx = [-1, 0, 1, 0], cy = [0, -1, 0, 1];
     possibles = [];
     for( var i = 0; i < 4; i++ ) {
