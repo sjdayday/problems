@@ -1,4 +1,4 @@
-var board, zx, zy, clicks, possibles, clickCounter, oldzx = -1, oldzy = -1;
+var board, zx, zy, clicks, possibles, clickCounter
 var number, secondsLimit, elapsedSeconds = 0, goalLabel, problemLabel;
 var startButton, timerId, startToggle = 1, startTime, finished = 0; clickable=0;
 var domain, port;  
