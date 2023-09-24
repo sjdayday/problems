@@ -3,9 +3,10 @@ var number, secondsLimit, elapsedSeconds = 0, goalLabel, problemLabel;
 var startButton, timerId, startToggle = 1, startTime, finished = 0; clickable=0;
 var domain, port;  
 // domain = "localhost"; port=8080; 
-//domain = "127.0.0.1"; port=8080; 
+// domain = "127.0.0.1"; port=8080; 
 domain = "stevedoubleday.com"; port=80; 
 function getPossibles() {
+    console.log("zx: " + zx + " zy: " + zy); 
     var ii, jj, cx = [-1, 0, 1, 0], cy = [0, -1, 0, 1];
     possibles = [];
     for( var i = 0; i < 4; i++ ) {
@@ -72,7 +73,7 @@ function boardTwo() {
             board[i][j] = 2 + (2*i) + ((j-2) * 8)
         }
     }
-
+    zx = 3; zy = 3;     
 }
 function countdown() {
     secondsLimit--;
@@ -80,7 +81,7 @@ function countdown() {
     if (secondsLimit > 0) {
         goalLabel.innerHTML = "Seconds left: " + secondsLimit;   
     } else {
-        stop()
+        stop();
     }  
 }
 function sendData() {
@@ -149,13 +150,13 @@ function startHandle() {
     clicks = 0;
     updateBtns();
     toggleStartButton();
-    // countdown();
 }
 
 function restart() {
     shuffleNumber();
+    removeButtonsFromBoard(); 
+    addButtonsToBoard();
     goalBoard();
-    // shuffle();
     clicks = 0;
     secondsLimit = 300; 
     elapsedSeconds = 0;
@@ -195,7 +196,6 @@ function btnHandle( e ) {
                 setTimeout(function(){ 
                     alert( "WELL DONE!" );
                     stop(); 
-                    // restart();
                 }, 1);
             }
         }
@@ -213,6 +213,37 @@ function createBoard() {
     }
     zx = zy = 3; board[zx][zy] = 16;
 }
+function removeButtonsFromBoard() {
+    const boardNode = document.getElementById("boardButtons");
+    while (boardNode.firstChild) {
+        // console.log("remove node: " + boardNode.lastChild.id);
+        boardNode.removeChild(boardNode.lastChild); 
+
+    }
+}
+function addButtonsToBoard() {
+    const boardNode = document.getElementById("boardButtons");
+    for( var j = 0; j < 4; j++ ) {
+        for( var i = 0; i < 4; i++ ) {
+            b = document.createElement( "button" );
+            // b.className += "btnNumber";
+            b.id = "btn" + ( i + j * 4 );
+            b.i = i; b.j = j;
+            b.addEventListener( "click", btnHandle, false );
+            b.appendChild( document.createTextNode( "" ) );
+            boardNode.appendChild( b );
+            // console.log("add button to board: " + b.id); 
+        }
+    }   
+
+}
+function addBoardToDocument() {
+    var b, d  = document.createElement( "div" );
+    d.setAttribute("id", "boardButtons");
+    d.className += "board";
+    document.body.appendChild( d );
+}
+
 function createBtns() {
     problemLabel = document.createElement( "p" );
     problemLabel.className += "txt";
@@ -223,22 +254,7 @@ function createBtns() {
     goalLabel.className += "txt";
     goalLabel.innerHTML = "Goal: ";
     document.body.appendChild( goalLabel );
-
-
-    var b, d  = document.createElement( "div" );
-    d.className += "board";
-    document.body.appendChild( d );
-    for( var j = 0; j < 4; j++ ) {
-        for( var i = 0; i < 4; i++ ) {
-            b = document.createElement( "button" );
-            // b.className += "btnNumber";
-            b.id = "btn" + ( i + j * 4 );
-            b.i = i; b.j = j;
-            b.addEventListener( "click", btnHandle, false );
-            b.appendChild( document.createTextNode( "" ) );
-            d.appendChild( b );
-        }
-    }
+    addBoardToDocument(); 
     var sbtn  = document.createElement( "div" );
     sbtn.className += "startd";
     document.body.appendChild( sbtn );
@@ -246,8 +262,6 @@ function createBtns() {
     startButton.className += "start";
     startButton.addEventListener( "click", startHandle, false );
     startButton.innerHTML = "Start";
-    // startButton.appendChild( document.createTextNode( "" ) );
-    // document.body.appendChild( startButton );
     sbtn.appendChild( startButton );
     clickCounter = document.createElement( "p" );
     clickCounter.className += "txt";
