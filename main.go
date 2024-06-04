@@ -95,10 +95,13 @@ func graphA(c *gin.Context) {
 	bar.SetGlobalOptions(charts.WithTitleOpts(opts.Title{
 		Title:    "Problem A",
 		Subtitle: "Number of solutions in each 30 second interval",
+	}), charts.WithLegendOpts(opts.Legend{
+		Show: true,
 	}))
 	bar.SetXAxis([]string{"<30", "30", "60", "90", "120", "150", "180", "210", "240", "270", "300+"}).
 		AddSeries("Number A1", buildSeriesProblemA(1)).
 		AddSeries("Number A2", buildSeriesProblemA(2))
+
 	c.Header("Cache-Control", "no-cache, no-store, must-revalidate")
 	c.Header("Pragma", "no-cache")
 	c.Header("Expires", "0")
