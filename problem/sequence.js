@@ -121,7 +121,7 @@ function createSeries() {
             if (j < 9) {
                 b = document.createElement( "button" ); 
                 b.id = "btn" + i + "-" + j ;
-                b.className = "button"
+                b.className = "graybutton"
                 b.appendChild( document.createTextNode( "" ) );
                 td.appendChild( b );
             } else {
@@ -184,7 +184,7 @@ function setLetter(i, j, letter) {
     // console.log(id)
     b = document.getElementById( id );
     b.innerHTML = ( ""+letter );
-    b.className = "button"
+    b.className = "graybutton"
 }
 function checkSolution() {
     if (notFinished) {
