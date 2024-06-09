@@ -177,6 +177,11 @@ function start() {
     startToggle = 0; 
     startTime = Math.round(new Date().getTime()/1000) 
     createSeries();
+    setFocusOnFirstInput(); 
+}
+function setFocusOnFirstInput() {
+    var firstInput = document.getElementById("in1-9");
+    firstInput.focus({ focusVisible: true }); 
 }
 function setLetter(i, j, letter) {
     var b, id;
